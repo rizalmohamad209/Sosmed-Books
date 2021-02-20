@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+    crossorigin="anonymous"></script>
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <title>CRUD</title>
+</head>
+
+<body>
+  <div class="container">
+    <button type="button" style="margin-bottom: 20px;margin-top: 20px;float: right;" class="btn btn-primary"
+      data-bs-toggle="modal" data-bs-target="#insertdata">
+      insert
+    </button>
+
+
+    <table class=" table table-bordered table-striped">
+      <thead class="thead-dark">
+        <tr>
+
+          {{!-- <th scope="col">No</th> --}}
+          <th scope="col">Nama Buku</th>
+          <th scope="col">Kategori</th>
+          <th scope="col">Penerbit</th>
+          <th scope="col">Gambar</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each users }}
+        <tr>
+          <th>{{nama_buku}}</th>
+          <th>{{kategori}}</th>
+          <th>{{penerbit}}</th>
+          <th><img src="{{gambar}}" alt="Gambar Buku" style="width: 200px;height: 150px;"></th>
+          <th><button
+              style="list-style: none;text-decoration: none;border: none;background-color: #f44336;color: white;"
+              data-bs-toggle="modal" data-bs-target="#DeleteMOdal{{idbuku}}">Hapus</button>|<button
+              style="list-style: none;text-decoration: none;border: none;background-color:blue;color: white;"
+              data-bs-toggle="modal" data-bs-target="#UpdateModal{{idbuku}}">Edit</button>
+            {{!-- modal delete --}}
+            <form action="/deleteBook" method="post">
+              <div class="example-modal">
+                <div id="DeleteMOdal{{idbuku}}" class="modal fade" role="dialog" style="display:none;">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                        <h3 class="modal-title">Delete Data</h3>
+                      </div>
+                      <div class="modal-body">
+                        <div class="col-sm-8"><input type="hidden" class="form-control" name="id" value="{{idbuku}}">
+                        </div>
+                        <strong>Apakah anda yakin ingin menghapus buku "{{nama_buku}}"?</strong>
+                        <div class="modal-footer">
+                          <button id="nosave" type="button" class="btn btn-danger pull-left"
+                            data-dismiss="modal">Batal</button>
+                          <input type="submit" class="btn btn-primary" value="Hapus">
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+            {{!-- end modal delete --}}
+            {{!-- modal edit --}}
+            <form action="/editBook" method="post">
+              <div class="example-modal">
+                <div id="UpdateModal{{idbuku}}" class="modal fade" role="dialog" style="display:none;">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                        <h3 class="modal-title">Menambahkan data baru</h3>
+                      </div>
+                      <input type="hidden" class="form-control" name="id" value="{{idbuku}}">
+                      <div class="modal-body">
+                        <div class="form-group">
+                          <div class="row">
+                            <label class="col-sm-3 control-label text-right">Nama Buku <span
+                                class="text-red">*</span></label>
+                            <div class="col-sm-8"><input type="text" class="form-control" name="nama_buku" value=""
+                                style="margin-bottom: 10px;"></div>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="row">
+                            <label class="col-sm-3 control-label text-right">Kategori <span
+                                class="text-red">*</span></label>
+                            <div class="col-sm-8">
+                              <select class="form-select" name="idkategori" id="exampleFormControlSelect1"
+                                style="margin-bottom: 10px;">
+                                {{#each ../kategori}}
+                                <option value="{{id_kategori}}">{{kategori}}</option>
+                                {{/each}}
+
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="row">
+                            <label class="col-sm-3 control-label text-right">Penerbit <span
+                                class="text-red">*</span></label>
+                            <div class="col-sm-8"><input type="text" class="form-control" name="penerbit"
+                                style="margin-bottom: 10px;" value=""></div>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="row">
+                            <label class="col-sm-3 control-label text-right">Gambar <span
+                                class="text-red">*</span></label>
+                            <div class="col-sm-8"><input type="text" class="form-control" name="gambar"
+                                style="margin-bottom: 10px;" value=""></div>
+                          </div>
+                        </div>
+
+                        <div class="modal-footer">
+                          <button id="nosave" type="button" class="btn btn-danger pull-left"
+                            data-dismiss="modal">Batal</button>
+                          <input type="submit" class="btn btn-primary" value="Simpan">
+                        </div>
+                        <!--<div class="box-footer">
+                                        <a href="../user/data_user.php" class="btn btn-danger"><i class="fa fa-close"></i> Batal</a>
+                                        <input type="submit" name="submit" class="btn btn-primary" value="Simpan">
+                                      </div> /.box-footer -->
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+            {{!-- end modal edit --}}
+          </th>
+        </tr>
+        {{/each }}
+      </tbody>
+    </table>
+
+    {{!-- modal add data --}}
+    <form action="/addBook" method="post">
+      <div class="example-modal">
+        <div id="insertdata" class="modal fade" role="dialog" style="display:none;">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">Menambahkan data baru</h3>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <div class="row">
+                    <label class="col-sm-3 control-label text-right">Nama Buku <span class="text-red">*</span></label>
+                    <div class="col-sm-8"><input type="text" class="form-control" name="nama_buku" value=""
+                        style="margin-bottom: 10px;"></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <label class="col-sm-3 control-label text-right">Kategori <span class="text-red">*</span></label>
+                    <div class="col-sm-8">
+                      <select class="form-select" name="idkategori" id="exampleFormControlSelect1"
+                        style="margin-bottom: 10px;">
+                        {{#each kategori}}
+                        <option value="{{id_kategori}}">{{kategori}}</option>
+                        {{/each}}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <label class="col-sm-3 control-label text-right">Penerbit <span class="text-red">*</span></label>
+                    <div class="col-sm-8"><input type="text" class="form-control" name="penerbit"
+                        style="margin-bottom: 10px;" value=""></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <label class="col-sm-3 control-label text-right">Gambar <span class="text-red">*</span></label>
+                    <div class="col-sm-8"><input type="text" class="form-control" name="gambar"
+                        style="margin-bottom: 10px;" value=""></div>
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button id="nosave" type="button" class="btn btn-danger pull-left" data-dismiss="modal">Batal</button>
+                  <input type="submit" class="btn btn-primary" value="Simpan">
+                </div>
+                <!--<div class="box-footer">
+                    <a href="../user/data_user.php" class="btn btn-danger"><i class="fa fa-close"></i> Batal</a>
+                    <input type="submit" name="submit" class="btn btn-primary" value="Simpan">
+                  </div> /.box-footer -->
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    {{!-- modal end data --}}
+
+
+
+  </div>
+  <!-- modal -->
+
+
+  <!-- Optional JavaScript; choose one of the two! -->
+
+  <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+  <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>  -->
+  <!-- <script src="/js/bootstrap.min.js"></script>
+      <script src="/js/bootstrap.js"></script> -->
+  <!-- Option 2: Separate Popper and Bootstrap JS -->
+
+  <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+   -->
+</body>
+
+</html>
