@@ -1,6 +1,7 @@
 const mysql = require("mysql");
-const { DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE } = process.env;
 let conn;
+const { DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE } = process.env;
+
 const get_SQL_Connection = function () {
   conn = mysql.createConnection({
     host: DB_HOST,

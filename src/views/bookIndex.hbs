@@ -18,7 +18,24 @@
 </head>
 
 <body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand" href="#">Books Collection</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse d-flex" id="navbarNavAltMarkup">
+        <div class="navbar-nav" style="margin-left: auto !important;">
+          <a class="nav-link text-dark" href="/">Books</a>
+          <a class="nav-link text-dark" href="/kategori">Kategori</a>
+        </div>
+      </div>
+    </div>
+  </nav>
   <div class="container">
+
+
     <button type="button" style="margin-bottom: 20px;margin-top: 20px;float: right;" class="btn btn-primary"
       data-bs-toggle="modal" data-bs-target="#insertdata">
       insert
@@ -44,9 +61,8 @@
           <th>{{kategori}}</th>
           <th>{{penerbit}}</th>
           <th><img src="{{gambar}}" alt="Gambar Buku" style="width: 200px;height: 150px;"></th>
-          <th><button class="btn btn-danger"
-              data-bs-toggle="modal" data-bs-target="#DeleteMOdal{{idbuku}}">Hapus</button>|<button
-              class="btn btn-primary"
+          <th><button class="btn btn-danger" data-bs-toggle="modal"
+              data-bs-target="#DeleteMOdal{{idbuku}}">Hapus</button>|<button class="btn btn-primary"
               data-bs-toggle="modal" data-bs-target="#UpdateModal{{idbuku}}">Edit</button>
             {{!-- modal delete --}}
             <form action="/deleteBook" method="post">
@@ -93,8 +109,8 @@
                           <div class="row">
                             <label class="col-sm-3 control-label text-right">Nama Buku <span
                                 class="text-red">*</span></label>
-                            <div class="col-sm-8"><input type="text" class="form-control" name="nama_buku" value="{{nama_buku}}"
-                                style="margin-bottom: 10px;"></div>
+                            <div class="col-sm-8"><input type="text" class="form-control" name="nama_buku"
+                                value="{{nama_buku}}" style="margin-bottom: 10px;"></div>
                           </div>
                         </div>
                         <div class="form-group">
