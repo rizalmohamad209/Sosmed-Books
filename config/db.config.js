@@ -1,28 +1,34 @@
 const mysql = require("mysql");
 const { DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE } = process.env;
-const pool = require("generic-pool");
-const mysql = require("mysql");
-
-const conn = pool.createPool(
-  {
-    create: (done) => {
-      return mysql
-        .createConnection({
-          hostname: "localhost",
-          user: "root",
-          password: "root",
-          database: "chat_db",
-        })
-        .connect(done);
-    },
-    destroy: (connection) => connection.destroy(),
-    validate: (connection) => connection.threadId,
-  },
-  {
-    testOnBorrow: true,
-    acquireTimeoutMillis: 10000,
-    min: 1,
-    max: size,
-  }
-);
+let conn;
+const get_SQL_Connection = function () {
+  conn = mysql.createConnection({
+    host: DB_HOST,
+    user: DB_USERNAME,
+    password: DB_PASSWORD,
+    database: DB_DATABASE,
+    multipleStatements: true,
+  });
+  // When connected
+  conn.connect(function (err) {
+    if (err) {
+      console.log("SQL CONNECT ERROR&gt;&gt;" + err);
+      setTimeout(get_SQL_Connection, 2000); // Retry when connection fails
+    } else {
+      console.log("SQL CONNECT SUCCESSFUL.");
+    }
+  });
+  // In case of error
+  conn.on("error", function (err) {
+    console.log("SQL CONNECTION ERROR&gt;&gt;" + err);
+    if (err.code === "PROTOCOL_CONNECTION_LOST") {
+      console.log("=&gt;RECONECT ...");
+      // reconnect
+      get_SQL_Connection();
+    } else {
+      throw err;
+    }
+  });
+};
+get_SQL_Connection();
 module.exports = conn;
